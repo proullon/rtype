@@ -36,6 +36,9 @@ function Room(context) {
 Room.prototype.Connect = function(uname, rname) {
     console.log("Room.prototype.Connect");
 
+    this.uname = uname;
+    this.rname = rname;
+
     room = this;
     // Create a socket
     this.socket = new WebSocket('ws://' + window.location.host + '/ws/join?uname=' + uname + '&room=' + rname);
