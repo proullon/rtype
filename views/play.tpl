@@ -8,7 +8,7 @@
     <meta name="author" content="">
     <link rel="shortcut icon" href="/static/img/favicon.ico">
 
-    <title>R-Type | Home</title>
+    <title>R-Type | Play</title>
 
     <!-- Bootstrap core CSS -->
     <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -38,20 +38,32 @@
             <div class="inner">
               <h3 class="masthead-brand">R-Type</h3>
               <ul class="nav masthead-nav">
-                <li class="active"><a href="/">Home</a></li>
+                <li><a href="/">Home</a></li>
                 <li><a href="#">Features</a></li>
-                <li><a href="/play">Play</a></li>
+                <li class="active"><a href="/play">Play</a></li>
                 <li><a href="#">Hall of fame</a></li>
               </ul>
             </div>
           </div>
 
           <div class="inner cover">
-            <h1 class="cover-heading">R-Type online.</h1>
-            <p class="lead">Revival of the 1987 side scrolling shoot-em-up arcade game.</p>
-            <p class="lead">
-              <a href="/play" class="btn btn-lg btn-default">Play</a>
-            </p>
+            <h1 class="cover-heading">Enter the game</h1>
+            <!-- <p class="lead"> -->
+            <form class="lead" method="post" role="form">
+                <div class="form-group"> <!-- Room name-->
+                    <label for="room">Room</label>
+                    <input type="text" class="form-control" name="room" placeholder="enter room name">
+                </div>
+                <div class="form-group">
+                    <label for="name">Pseudo</label>
+                    <input type="text" class="form-control" name="name" placeholder="enter your pseudo">
+                </div>
+                <button type="submit" class="btn btn-lg btn-default">Join</button>
+            </form>
+            <!-- </p> -->
+            <!-- <p class="lead"> -->
+              <!-- <a href="/game" class="btn btn-lg btn-default">Join</a> -->
+            <!-- </p> -->
           </div>
 
           <div class="mastfoot">
