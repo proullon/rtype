@@ -11,6 +11,7 @@
 
         <script type="text/javascript" src="static/js/keyboard.js"></script>
         <script type="text/javascript" src="static/js/bullet.js"></script>
+        <script type="text/javascript" src="static/js/peon.js"></script>
         <script type="text/javascript" src="static/js/spaceship.js"></script>
         <script type="text/javascript" src="static/js/room.js"></script>
         <script type="text/javascript" src="static/js/background.js"></script>

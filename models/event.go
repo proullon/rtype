@@ -16,6 +16,7 @@ const (
     EVENT_PlayerKey    = 6
     EVENT_PlayerLeave  = 7
     EVENT_NewBullet    = 8
+    EVENT_NewPeon      = 9
 )
 
 const (
