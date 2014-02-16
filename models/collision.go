@@ -70,7 +70,6 @@ func (c *Collision) CollisionRoutine() {
             if c.checkCollision(test) == false {
                 c.Entities[test.Id()] = test
             }
-            // beego.Info("Test for", test.Id(), "done")
             break
         }
     }

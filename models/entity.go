@@ -1,9 +1,5 @@
 package models
 
-import (
-    "github.com/astaxie/beego"
-)
-
 type Entity interface {
     Id() int
     Live(eventChannel chan Event, collisionChannel chan Entity)
@@ -32,14 +28,5 @@ func (b *baseEntity) PosY() int {
 }
 
 func (b *baseEntity) Kill() {
-
-    if b.x > 0 {
-        beego.Info("baseEntity.Kill id=", b.id)
-    }
-
     b.stop <- true
-
-    if b.x > 0 {
-        beego.Info("baseEntity.Kill id=", b.id, "DONE")
-    }
 }

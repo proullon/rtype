@@ -1,7 +1,7 @@
 package models
 
 import (
-    "github.com/astaxie/beego"
+    // "github.com/astaxie/beego"
     "time"
 )
 
@@ -32,9 +32,6 @@ func (p *Peon) Live(eventChannel chan Event, collisionChannel chan Entity) {
     for {
         select {
         case _ = <-p.stop:
-            if p.x > 0 {
-                beego.Info("Peon", p.id, "is dead")
-            }
             eventChannel <- CreateEvent(EVENT_PlayerDead, p.id, p.x, p.y)
             return
             break

@@ -1,7 +1,7 @@
 package models
 
 import (
-    "github.com/astaxie/beego"
+    // "github.com/astaxie/beego"
     "time"
 )
 
@@ -33,7 +33,6 @@ func (b *Bullet) Live(eventChannel chan Event, collisionChannel chan Entity) {
         select {
         // When kill function is called
         case _ = <-b.stop:
-            beego.Info("Bullet", b.id, "is dead")
             eventChannel <- CreateEvent(EVENT_PlayerDead, b.id, b.x, b.y)
             return
             break
