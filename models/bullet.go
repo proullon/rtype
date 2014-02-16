@@ -1,43 +1,54 @@
 package models
 
 import (
+    "github.com/astaxie/beego"
     "time"
 )
 
 type Bullet struct {
-    Id   int
-    PosX int
-    PosY int
+    baseEntity
 }
 
 func NewBullet(x int, y int) (bullet *Bullet) {
     bullet = &Bullet{}
 
-    bullet.Id = id
+    bullet.id = id
     id++
 
-    bullet.PosX = x
-    bullet.PosY = y
+    bullet.x = x
+    bullet.y = y
+
+    bullet.stop = make(chan bool)
     return
 }
 
-func (b *Bullet) Live(eventChannel chan Event) {
+func (b *Bullet) Live(eventChannel chan Event, collisionChannel chan Entity) {
     ticker := time.NewTicker(time.Millisecond * 50)
 
     // Warn the world you're alive !
-    eventChannel <- CreateEvent(EVENT_NewBullet, b.Id, b.PosX, b.PosY)
+    eventChannel <- CreateEvent(EVENT_NewBullet, b.id, b.x, b.y)
 
     // Then GO RIGHT !
     for {
         select {
+        // When kill function is called
+        case _ = <-b.stop:
+            beego.Info("Bullet", b.id, "is dead")
+            eventChannel <- CreateEvent(EVENT_PlayerDead, b.id, b.x, b.y)
+            return
+            break
+        // Each 50ms
         case <-ticker.C:
-            // Nobody can see you anymore
-            if b.PosX > MAP_SIZE_X {
-                return
-            }
+            // Make your move
+            b.x += 4
 
-            b.PosX += 4
-            eventChannel <- CreateEvent(EVENT_PlayerMove, b.Id, b.PosX, b.PosY)
+            // Check if there is no collision
+            // beego.Info("Bullet checking for collision")
+            collisionChannel <- b
+            // beego.Info("Bullet check done")
+
+            // Tell the world
+            eventChannel <- CreateEvent(EVENT_PlayerMove, b.id, b.x, b.y)
             break
         }
     }
