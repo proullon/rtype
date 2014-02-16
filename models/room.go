@@ -7,9 +7,10 @@ import (
 var id int = 0
 
 type Room struct {
-    Name    string
-    Map     Map
-    players []*Player
+    Name       string
+    Map        Map
+    players    []*Player
+    collisionM *Collision
 
     InChannel  chan string
     OutChannel chan string
@@ -114,7 +115,7 @@ func (room *Room) processEvent(e Event) {
     case e.Type == EVENT_PlayerShoot:
         p := room.FindPlayer(e.Id)
         b := NewBullet(p.PosX, p.PosY)
-        go b.Live(room.EntityChan)
+        go b.Live(room.EntityChan, room.collisionM.Test)
         break
     }
 
@@ -130,6 +131,15 @@ func (room *Room) dispatchEvent(data string) {
 }
 
 func (room *Room) roomRoutine() {
+
+    // Get a collision manager
+    beego.Info("Starting collision manager")
+    room.collisionM = NewCollisionCenter()
+    go room.collisionM.CollisionRoutine()
+
+    // Start level
+    beego.Info("Starting level routine")
+    go LevelRoutine(room.EntityChan, room.collisionM.Test)
 
     for {
         select {

@@ -6,7 +6,8 @@ var EVENT = {
     "PLAYER_SHOOT" : 5,
     "PLAYER_KEY" : 6,
     "PLAYER_LEAVE" : 7,
-    "NEW_BULLET" : 8
+    "NEW_BULLET" : 8,
+    "NEW_PEON" : 9,
 }
 
 var KEY = {
@@ -64,6 +65,11 @@ Room.prototype.ParseEvent = function(event) {
             console.log("Room.prototype.ParseEvent: Player Joined : ", data);
             this.PlayerJoined(data.Id, data.X, data.Y);
             break;
+        case EVENT.PLAYER_DEAD:
+            if (data.X > 0)
+                console.log("Room.prototype.ParseEvent : PleyerDead : ", data);
+            this.PlayerDead(data.Id);
+            break;
         case EVENT.PLAYER_ID:
             console.log("Room.prototype.ParseEvent : PlayerID : ", data);
             this.PlayerId(data.Id, data.X, data.Y);
@@ -74,6 +80,9 @@ Room.prototype.ParseEvent = function(event) {
             break;
         case EVENT.NEW_BULLET:
             this.NewBullet(data.Id, data.X, data.Y)
+            break;
+        case EVENT.NEW_PEON:
+            this.NewPeon(data.Id, data.X, data.Y)
             break;
         break;
     }
@@ -143,14 +152,13 @@ Room.prototype.Draw = function() {
     // Clean screen
     var x = 0;
     var y = 0;
-    var w = 0;
-    var h = 0;
     var canvas = document.getElementById('scroller');
     this.context.clearRect(x, y, canvas.width, canvas.height);
 
     while (i < this.entities.length) {
-        if (this.entities[i] != null)
+        if (this.entities[i] != null) {
             this.entities[i].Draw(this.context);
+        }
         i++;
     }
 }
@@ -209,6 +217,24 @@ Room.prototype.NewBullet = function(id, x, y) {
     this.entities[this.entities.length] = bullet;
 }
 
+Room.prototype.NewPeon = function(id, x, y) {
+
+    var peon = new Peon(id, x, y);
+
+    // If there is empty slot in array, fill it
+    var i = 0;
+    while (i < this.entities.length) {
+        if (this.entities[i] == null) {
+            this.entities[i] = peon;
+            return
+        }
+        i++;
+    }
+
+    // Set new entity in the end
+    this.entities[this.entities.length] = peon;
+}
+
 Room.prototype.PlayerId = function(playerId, x, y) {
     // if (this.playerId >= 0 && this.playerId <= 4)
     //     return
@@ -220,5 +246,33 @@ Room.prototype.PlayerId = function(playerId, x, y) {
 
 Room.prototype.PlayerLeave = function(playerId) {
 
-    this.entities[playerId] = null;
+    var i = 0;
+
+    // Search player
+    while (i < this.entities.length) {
+
+        // Once player found, update position
+        if (this.entities[i] != null && this.entities[i].id == playerId) {
+            this.entities[i] = null;
+            return;
+        }
+        i++;
+    }
+
+}
+
+Room.prototype.PlayerDead = function(playerId) {
+
+    var i = 0;
+
+    // Search player
+    while (i < this.entities.length) {
+
+        // Once player found, update position
+        if (this.entities[i] != null && this.entities[i].id == playerId) {
+            this.entities[i] = null;
+            return;
+        }
+        i++;
+    }
 }
